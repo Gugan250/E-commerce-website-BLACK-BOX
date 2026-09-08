@@ -126,7 +126,7 @@ signupForm.addEventListener("submit", function (event) {
     alert("Account created successfully!");
 
     window.location.href =
-        "Login.html";
+        "login.html";
 
 });
 
