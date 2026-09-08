@@ -1,8 +1,6 @@
 let cart =
     JSON.parse(localStorage.getItem("cart")) || [];
 
-
-
 const cartItemsContainer =
     document.getElementById("cart-items");
 
@@ -25,7 +23,7 @@ function displayCart() {
 
     cartItemsContainer.innerHTML = "";
 
-if (cart.length === 0) {
+    if (cart.length === 0) {
         emptyCart.style.display = "block";
         
         const cartContainer = document.querySelector(".cart-container");
@@ -41,8 +39,10 @@ if (cart.length === 0) {
 
     emptyCart.style.display = "none";
 
-    document.querySelector(".cart-container").style.display = "grid";
-
+    const cartContainer = document.querySelector(".cart-container");
+    if (cartContainer) {
+        cartContainer.style.display = "grid";
+    }
 
     cart.forEach(function (product, index) {
 
@@ -50,7 +50,6 @@ if (cart.length === 0) {
             document.createElement("div");
 
         cartItem.classList.add("cart-item");
-
 
         cartItem.innerHTML = `
 
@@ -72,7 +71,6 @@ if (cart.length === 0) {
 
             </div>
 
-
             <div class="quantity-box">
 
                 <button
@@ -93,7 +91,6 @@ if (cart.length === 0) {
 
             </div>
 
-
             <button
                 class="remove-btn"
                 data-index="${index}">
@@ -104,11 +101,9 @@ if (cart.length === 0) {
 
         `;
 
-
         cartItemsContainer.appendChild(cartItem);
 
     });
-
 
     updateTotal();
 }
@@ -117,7 +112,6 @@ function updateTotal() {
 
     let subtotal = 0;
 
-
     cart.forEach(function (product) {
 
         subtotal +=
@@ -125,17 +119,14 @@ function updateTotal() {
 
     });
 
-
     let delivery = 0;
 
     if (subtotal > 0) {
         delivery = 50;
     }
 
-
     let total =
         subtotal + delivery;
-
 
     subtotalElement.textContent =
         "₹" + subtotal;
@@ -167,9 +158,13 @@ cartItemsContainer.addEventListener(
             return;
         }
 
-
         const index =
             Number(button.dataset.index);
+
+        // Safety check to prevent out-of-bounds or NaN errors
+        if (isNaN(index) || index < 0 || index >= cart.length) {
+            return;
+        }
 
         if (button.classList.contains("increase")) {
 
@@ -195,7 +190,6 @@ cartItemsContainer.addEventListener(
 
         }
 
-
         saveCart();
 
         displayCart();
@@ -215,7 +209,6 @@ if (checkoutBtn) {
 
                 return;
             }
-
 
             window.location.href =
                 "checkout.html";
