@@ -14,7 +14,7 @@ logoutBtn.addEventListener("click", function () {
 
         alert("Logged out successfully!");
 
-        window.location.href = "Home.html";
+        window.location.href = "home.html";
 
     }
 
