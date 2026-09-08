@@ -215,7 +215,7 @@ if (checkoutBtn) {
 
 
             window.location.href =
-                "Checkout.html";
+                "checkout.html";
 
         }
     );
