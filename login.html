@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Black Box - Login</title>
+
+    <link rel="stylesheet"
+          href="login.css">
+
+    <link rel="icon" href="img file/image 2.png">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+    <main class="login-container">
+
+        <div class="login-box">
+
+            <div class="login-icon">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+
+            <h1>Welcome Back</h1>
+
+            <p>Login to your Black Box account</p>
+
+
+            <form id="login-form">
+
+                <div class="input-group">
+
+                    <label for="email">
+                        Gmail
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your Gmail"
+                        autocomplete="email"
+                        required>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="password-box">
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required>
+
+                        <button
+                            type="button"
+                            id="show-password">
+
+                            <i class="fa-solid fa-eye"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <p id="login-error"></p>
+
+                <button
+                    type="submit"
+                    class="login-submit">
+
+                    LOGIN
+
+                </button>
+
+
+            </form>
+
+
+            <p class="signup-text">
+
+                Don't have an account?
+
+                <a href="Signup.html">
+                    Create Account
+                </a>
+
+            </p>
+
+
+        </div>
+
+    </main>
+
+
+    <script src="login.js"></script>
+
+</body>
+
+</html>

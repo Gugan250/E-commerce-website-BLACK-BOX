@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Black Box - Cart</title>
+
+    <link rel="icon" href="img file/image 2.png">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="cart.css">
+</head>
+
+<body>
+
+    <header>
+
+        <a href="index.html">
+            <img src="img file/image 1.png" alt="Black Box" class="logo">
+        </a>
+
+        <nav class="navbar">
+
+            <ul class="navlink">
+
+                <li>
+                    <a href="index.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>HOME</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="Products.html">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        <span>PRODUCTS</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="Cart.html" class="active">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span>CART</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="Wishlist.html">
+                        <i class="fa-solid fa-heart"></i>
+                        <span>WISHLIST</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="Account.html">
+                        <i class="fa-solid fa-user"></i>
+                        <span>ACCOUNT</span>
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </header>
+
+    <main class="cart-page">
+
+        <h1 class="cart-title">
+            <i class="fa-solid fa-cart-shopping"></i>
+            Your Cart
+        </h1>
+
+
+        <div class="cart-container">
+
+            <section class="cart-items">
+
+                <div id="cart-items">
+                    
+                </div>
+
+            </section>
+
+            <aside class="cart-summary">
+
+                <h2>Order Summary</h2>
+
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="subtotal">₹0</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Delivery</span>
+                    <span id="delivery">₹0</span>
+                </div>
+
+                <hr>
+
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span id="total">₹0</span>
+                </div>
+
+                <button id="checkout-btn">
+                    <i class="fa-solid fa-lock"></i>
+                    Proceed to Checkout
+                </button>
+
+                <a href="Products.html" class="continue-shopping">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Continue Shopping
+                </a>
+
+            </aside>
+
+        </div>
+
+        <div id="empty-cart" class="empty-cart">
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+            <h2>Your Cart is Empty</h2>
+
+            <p>
+                Looks like you haven't added anything to your cart yet.
+            </p>
+
+            <a href="Products.html">
+                Start Shopping
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <script src="cart.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
