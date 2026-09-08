@@ -25,14 +25,17 @@ function displayCart() {
 
     cartItemsContainer.innerHTML = "";
 
-    if (cart.length === 0) {
-
+if (cart.length === 0) {
         emptyCart.style.display = "block";
+        
+        const cartContainer = document.querySelector(".cart-container");
+        if (cartContainer) {
+            cartContainer.style.display = "none";
+        }
 
-        document.querySelector(".cart-container").style.display = "none";
-
-        updateTotal();
-
+        subtotalElement.textContent = "₹0";
+        deliveryElement.textContent = "₹0";
+        totalElement.textContent = "₹0";
         return;
     }
 
