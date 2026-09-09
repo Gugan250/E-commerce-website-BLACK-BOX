@@ -4,9 +4,21 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     background-color: #0b0f19; 
     overflow-x: hidden; 
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+.hero {
+    flex: 1;
 }
 
 .logo {
@@ -116,7 +128,7 @@ body {
 .slider-container {
     width: 100%;             
     max-width: 440px;        
-    aspect-ratio: 1 / 1;   
+    aspect-ratio: 1 / 1;    
     overflow: hidden; 
     border-radius: 20px;
     background: linear-gradient(135deg, #111827 0%, #1f2937 100%); 
@@ -287,9 +299,9 @@ body {
     }
 
     .slider-container {
-        width: 100%;       
+        width: 100%;        
         max-width: 300px;     
-        margin: 0 auto;       
+        margin: 0 auto;        
     }
 
     .footer {
