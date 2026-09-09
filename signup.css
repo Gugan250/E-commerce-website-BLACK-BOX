@@ -160,7 +160,7 @@ body {
 @media (max-width: 500px) {
     body {
         padding: 15px 10px;
-        align-items: center; /* Keeps it centered nicely, use flex-start if phone keyboard overflows */
+        align-items: center; 
     }
 
     .signup-box {
