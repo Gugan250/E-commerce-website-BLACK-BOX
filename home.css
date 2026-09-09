@@ -115,7 +115,8 @@ body{
 }
 
 .slider-container {
-    width: 440px;
+    width: 100%;             /* Change this from 440px to 100% */
+    max-width: 440px;        /* Add max-width so it doesn't get too big on desktop */
     height: 440px;
     overflow: hidden; 
     border-radius: 20px;
@@ -289,7 +290,9 @@ body{
 
     .slider-container {
         width: 320px;
+        max-width:320px;
         height: 320px;
+        margin:0px;
     }
 
     .footer {
