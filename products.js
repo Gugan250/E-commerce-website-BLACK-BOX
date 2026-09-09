@@ -14,30 +14,38 @@ sliders.forEach((slider) => {
             image.classList.remove("active");
         });
 
-        images[index].classList.add("active");
+        if (images[index]) {
+            images[index].classList.add("active");
+        }
     }
 
-    nextBtn.addEventListener("click", () => {
+    if (nextBtn) {
 
-        currentIndex++;
+        nextBtn.addEventListener("click", () => {
 
-        if (currentIndex >= images.length) {
-            currentIndex = 0;
-        }
+            currentIndex++;
 
-        showImage(currentIndex);
-    });
+            if (currentIndex >= images.length) {
+                currentIndex = 0;
+            }
 
-    prevBtn.addEventListener("click", () => {
+            showImage(currentIndex);
+        });
+    }
 
-        currentIndex--;
+    if (prevBtn) {
 
-        if (currentIndex < 0) {
-            currentIndex = images.length - 1;
-        }
+        prevBtn.addEventListener("click", () => {
 
-        showImage(currentIndex);
-    });
+            currentIndex--;
+
+            if (currentIndex < 0) {
+                currentIndex = images.length - 1;
+            }
+
+            showImage(currentIndex);
+        });
+    }
 
 });
 
@@ -49,23 +57,30 @@ const favoriteButtons =
 
 favoriteButtons.forEach(function (button) {
 
-    const card = button.closest(".product-card");
+    const card =
+        button.closest(".product-card");
 
-    const icon = button.querySelector("i");
+    const icon =
+        button.querySelector("i");
 
     const name =
         card.querySelector("h3").textContent.trim();
 
-    
+
     const alreadySaved =
         wishlist.some(product => product.name === name);
 
+
     if (alreadySaved) {
+
         button.classList.add("active");
 
-        icon.classList.remove("fa-regular");
-        icon.classList.add("fa-solid");
+        if (icon) {
+            icon.classList.remove("fa-regular");
+            icon.classList.add("fa-solid");
+        }
     }
+
 
     button.addEventListener("click", function () {
 
@@ -76,39 +91,58 @@ favoriteButtons.forEach(function (button) {
             card.querySelector(".product-image").src;
 
         const price =
-            card.querySelector(".product-price").textContent
+            card.querySelector(".product-price")
+                .textContent
                 .replace("₹", "")
                 .replace(",", "")
                 .trim();
 
+
         const existingProduct =
-            wishlist.find(product => product.name === name);
+            wishlist.find(
+                product => product.name === name
+            );
+
 
         if (existingProduct) {
 
-            wishlist = wishlist.filter(
-                product => product.name !== name
-            );
+            wishlist =
+                wishlist.filter(
+                    product => product.name !== name
+                );
 
             button.classList.remove("active");
 
-            icon.classList.remove("fa-solid");
-            icon.classList.add("fa-regular");
+            if (icon) {
+                icon.classList.remove("fa-solid");
+                icon.classList.add("fa-regular");
+            }
 
-        } else {
+        }
+
+        else {
 
             wishlist.push({
+
                 name: name,
+
                 description: description,
+
                 image: image,
+
                 price: Number(price)
+
             });
+
 
             button.classList.add("active");
 
-            icon.classList.remove("fa-regular");
-            icon.classList.add("fa-solid");
+            if (icon) {
+                icon.classList.remove("fa-regular");
+                icon.classList.add("fa-solid");
+            }
         }
+
 
         localStorage.setItem(
             "wishlist",
@@ -116,25 +150,149 @@ favoriteButtons.forEach(function (button) {
         );
 
         console.log("Wishlist:", wishlist);
+
     });
+
 });
 
-const imageModal = document.getElementById("imageModal");
-const modalImage = document.getElementById("modalImage");
-const modalClose = document.getElementById("modalClose");
-const modalPrev = document.getElementById("modalPrev");
-const modalNext = document.getElementById("modalNext");
+let cart =
+    JSON.parse(localStorage.getItem("cart")) || [];
+
+const cartButtons =
+    document.querySelectorAll(".cart-btn");
+
+
+function updateCartButton(button, added) {
+
+    if (added) {
+
+        button.innerHTML =
+            '<i class="fa-solid fa-cart-shopping"></i> Go to Cart';
+
+        button.classList.add("go-to-cart");
+
+    }
+
+    else {
+
+        button.innerHTML =
+            '<i class="fa-solid fa-cart-shopping"></i> Add to Cart';
+
+        button.classList.remove("go-to-cart");
+
+    }
+
+}
+
+
+cartButtons.forEach(function (button) {
+
+    const card =
+        button.closest(".product-card");
+
+    if (!card) {
+        return;
+    }
+
+    const name =
+        card.querySelector("h3").textContent.trim();
+
+
+    const alreadyInCart =
+        cart.some(
+            product => product.name === name
+        );
+
+
+    if (alreadyInCart) {
+
+        updateCartButton(button, true);
+
+    }
+
+    button.addEventListener("click", function () {
+
+        const existingProduct =
+            cart.find(
+                product => product.name === name
+            );
+
+        if (existingProduct) {
+
+            window.location.href = "cart.html";
+
+            return;
+        }
+
+        const description =
+            card.querySelector("p").textContent.trim();
+
+        const image =
+            card.querySelector(".product-image").src;
+
+        const price =
+            card.querySelector(".product-price")
+                .textContent
+                .replace("₹", "")
+                .replace(",", "")
+                .trim();
+
+        cart.push({
+
+            name: name,
+
+            description: description,
+
+            image: image,
+
+            price: Number(price),
+
+            quantity: 1
+
+        });
+
+        localStorage.setItem(
+            "cart",
+            JSON.stringify(cart)
+        );
+
+        updateCartButton(button, true);
+
+
+        console.log("Cart:", cart);
+
+    });
+
+});
+
+const imageModal =
+    document.getElementById("imageModal");
+
+const modalImage =
+    document.getElementById("modalImage");
+
+const modalClose =
+    document.getElementById("modalClose");
+
+const modalPrev =
+    document.getElementById("modalPrev");
+
+const modalNext =
+    document.getElementById("modalNext");
+
 const modalContainer =
     document.getElementById("modalImageContainer");
 
 
 let modalImages = [];
+
 let modalIndex = 0;
 
 document.querySelectorAll(".image-slider").forEach((slider) => {
 
     const images =
         slider.querySelectorAll(".product-image");
+
 
     images.forEach((image, index) => {
 
@@ -147,18 +305,29 @@ document.querySelectorAll(".image-slider").forEach((slider) => {
                 return;
             }
 
+
             modalImages =
-                Array.from(images).map(img => img.src);
+                Array.from(images)
+                    .map(img => img.src);
+
 
             const activeImage =
-                slider.querySelector(".product-image.active");
+                slider.querySelector(
+                    ".product-image.active"
+                );
+
 
             modalIndex =
-                Array.from(images).indexOf(activeImage);
+                Array.from(images)
+                    .indexOf(activeImage);
+
 
             if (modalIndex < 0) {
+
                 modalIndex = index;
+
             }
+
 
             openImageViewer();
 
@@ -170,12 +339,17 @@ document.querySelectorAll(".image-slider").forEach((slider) => {
 
 function openImageViewer() {
 
+    if (!imageModal || !modalImage) {
+        return;
+    }
+
     modalImage.src =
         modalImages[modalIndex];
 
     imageModal.classList.add("active");
 
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow =
+        "hidden";
 
     resetZoom();
 
@@ -183,119 +357,198 @@ function openImageViewer() {
 
 function closeImageViewer() {
 
+    if (!imageModal) {
+        return;
+    }
+
     imageModal.classList.remove("active");
 
-    document.body.style.overflow = "";
+    document.body.style.overflow =
+        "";
 
     resetZoom();
 
 }
 
-modalClose.addEventListener(
-    "click",
-    closeImageViewer
-);
 
-modalNext.addEventListener("click", function () {
+if (modalClose) {
 
-    modalIndex++;
+    modalClose.addEventListener(
+        "click",
+        closeImageViewer
+    );
 
-    if (modalIndex >= modalImages.length) {
-        modalIndex = 0;
-    }
+}
 
-    modalImage.src =
-        modalImages[modalIndex];
+if (modalNext) {
 
-    resetZoom();
+    modalNext.addEventListener(
+        "click",
+        function () {
 
-});
+            modalIndex++;
 
-modalPrev.addEventListener("click", function () {
+            if (
+                modalIndex >= modalImages.length
+            ) {
 
-    modalIndex--;
+                modalIndex = 0;
 
-    if (modalIndex < 0) {
-        modalIndex = modalImages.length - 1;
-    }
+            }
 
-    modalImage.src =
-        modalImages[modalIndex];
 
-    resetZoom();
+            modalImage.src =
+                modalImages[modalIndex];
 
-});
+            resetZoom();
 
-imageModal.addEventListener("click", function (event) {
+        }
+    );
 
-    if (event.target === imageModal) {
-        closeImageViewer();
-    }
+}
 
-});
+if (modalPrev) {
 
-document.addEventListener("keydown", function (event) {
+    modalPrev.addEventListener(
+        "click",
+        function () {
 
-    if (!imageModal.classList.contains("active")) {
-        return;
-    }
+            modalIndex--;
 
-    if (event.key === "Escape") {
-        closeImageViewer();
-    }
+            if (modalIndex < 0) {
 
-    if (event.key === "ArrowRight") {
+                modalIndex =
+                    modalImages.length - 1;
 
-        modalNext.click();
+            }
 
-    }
 
-    if (event.key === "ArrowLeft") {
+            modalImage.src =
+                modalImages[modalIndex];
 
-        modalPrev.click();
+            resetZoom();
 
-    }
+        }
+    );
 
-});
+}
 
-modalContainer.addEventListener(
-    "mousemove",
+if (imageModal) {
+
+    imageModal.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target === imageModal
+            ) {
+
+                closeImageViewer();
+
+            }
+
+        }
+    );
+
+}
+
+document.addEventListener(
+    "keydown",
     function (event) {
 
-        if (window.innerWidth <= 600) {
+        if (
+            !imageModal ||
+            !imageModal.classList.contains("active")
+        ) {
             return;
         }
 
-        const rect =
-            modalContainer.getBoundingClientRect();
+        if (event.key === "Escape") {
 
-        const x =
-            ((event.clientX - rect.left) / rect.width) * 100;
+            closeImageViewer();
 
-        const y =
-            ((event.clientY - rect.top) / rect.height) * 100;
+        }
 
-        modalImage.style.transformOrigin =
-            `${x}% ${y}%`;
 
-        modalImage.style.transform =
-            "scale(2.2)";
+        if (
+            event.key === "ArrowRight" &&
+            modalNext
+        ) {
 
-        modalContainer.classList.add("zooming");
+            modalNext.click();
+
+        }
+
+
+        if (
+            event.key === "ArrowLeft" &&
+            modalPrev
+        ) {
+
+            modalPrev.click();
+
+        }
 
     }
 );
 
-modalContainer.addEventListener(
-    "mouseleave",
-    function () {
+if (modalContainer) {
 
-        resetZoom();
+    modalContainer.addEventListener(
+        "mousemove",
+        function (event) {
 
-    }
-);
+            if (window.innerWidth <= 600) {
+                return;
+            }
+
+
+            const rect =
+                modalContainer.getBoundingClientRect();
+
+
+            const x =
+                ((event.clientX - rect.left) /
+                    rect.width) * 100;
+
+
+            const y =
+                ((event.clientY - rect.top) /
+                    rect.height) * 100;
+
+
+            modalImage.style.transformOrigin =
+                `${x}% ${y}%`;
+
+
+            modalImage.style.transform =
+                "scale(2.2)";
+
+
+            modalContainer.classList.add(
+                "zooming"
+            );
+
+        }
+    );
+
+
+    modalContainer.addEventListener(
+        "mouseleave",
+        function () {
+
+            resetZoom();
+
+        }
+    );
+
+}
 
 function resetZoom() {
+
+    if (!modalImage) {
+        return;
+    }
 
     modalImage.style.transform =
         "scale(1)";
@@ -303,8 +556,13 @@ function resetZoom() {
     modalImage.style.transformOrigin =
         "center center";
 
-    modalContainer.classList.remove(
-        "zooming"
-    );
+
+    if (modalContainer) {
+
+        modalContainer.classList.remove(
+            "zooming"
+        );
+
+    }
 
 }
