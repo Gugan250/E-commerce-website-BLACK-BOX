@@ -69,6 +69,7 @@ header {
     margin-right: 7px;
     font-size: 17px;
     transition: 0.3s;
+    flex-shrink: 0;
 }
 
 .navlink a:hover,
@@ -86,7 +87,7 @@ header {
     width: 100%;                 
     max-width: 1200px;
     margin: auto;
-    padding: 25px 12px;           
+    padding: 25px 12px;         
 }
 
 .cart-title {
@@ -129,12 +130,12 @@ header {
     background-color: #f8fafc;
     border-radius: 8px;
     object-fit: cover;
-    flex-shrink: 0;            
+    flex-shrink: 0;             
 }
 
 .cart-item-details {
     flex: 1;
-    min-width: 0;                
+    min-width: 0;               
 }
 
 .cart-item-details h3 {
@@ -172,6 +173,7 @@ header {
     cursor: pointer;
     font-size: 14px;
     transition: 0.2s;
+    flex-shrink: 0;
 }
 
 .quantity-btn:hover {
@@ -194,6 +196,7 @@ header {
     cursor: pointer;
     transition: 0.2s;
     padding: 4px;
+    flex-shrink: 0;
 }
 
 .remove-btn:hover {
