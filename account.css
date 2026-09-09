@@ -1,22 +1,17 @@
-
-
 * {
-
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 body {
-
     font-family: Arial, sans-serif;
     background: #f5f5f5;
     color: #111;
-
+    overflow-x: hidden; 
 }
 
 header {
-
     width: 100%;
     height: 75px;
     background: #111;
@@ -24,27 +19,21 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 0 50px;
-
 }
 
 .logo {
-
     width: 130px;
     display: block;
-
 }
 
 .navlink {
-
     display: flex;
     align-items: center;
     gap: 30px;
     list-style: none;
 }
 
-
 .navlink li a {
-
     display: flex;
     align-items: center;
     gap: 8px;
@@ -55,38 +44,28 @@ header {
     transition: 0.3s;
 }
 
-
 .navlink li a:hover {
-
     color: #ffffff;
-
 }
 
-
 .navlink i {
-
     font-size: 17px;
-
 }
 
 .account {
-
     width: 100%;
     max-width: 800px;
     margin: 50px auto;
     padding: 0 20px;
 }
 
-
 .account > h1 {
-
     text-align: center;
     font-size: 32px;
     margin-bottom: 30px;
 }
 
 .profile-card {
-
     display: flex;
     align-items: center;
     gap: 20px;
@@ -94,13 +73,10 @@ header {
     padding: 25px;
     border-radius: 12px;
     margin-bottom: 25px;
-    box-shadow:
-        0 5px 20px rgba(0, 0, 0, 0.08);
-
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
 }
 
 .profile-icon {
-
     width: 70px;
     height: 70px;
     border-radius: 50%;
@@ -110,32 +86,26 @@ header {
     justify-content: center;
     align-items: center;
     font-size: 28px;
-
+    flex-shrink: 0;
 }
 
-
 .profile-info h2 {
-
     font-size: 22px;
     margin-bottom: 7px;
 }
 
-
 .profile-info p {
-
     color: #666;
     font-size: 15px;
 }
 
 .account-options {
-
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
 .account-card {
-
     display: flex;
     align-items: center;
     gap: 18px;
@@ -145,21 +115,16 @@ header {
     border-radius: 12px;
     text-decoration: none;
     color: #111;
-    box-shadow:
-        0 4px 15px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
     transition: 0.3s;
 }
 
 .account-card:hover {
-
     transform: translateY(-3px);
-    box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.10);
-
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
 }
 
 .account-card-icon {
-
     width: 50px;
     height: 50px;
     border-radius: 10px;
@@ -173,34 +138,27 @@ header {
 }
 
 .account-card h3 {
-
     font-size: 17px;
     margin-bottom: 5px;
 }
 
-
 .account-card p {
-
     color: #777;
     font-size: 14px;
 }
 
 .arrow {
-
     margin-left: auto;
     color: #777;
     transition: 0.3s;
 }
 
-
 .account-card:hover .arrow {
-
     transform: translateX(5px);
     color: #111;
 }
 
 .logout-btn {
-
     display: block;
     margin: 30px auto 0;
     padding: 13px 30px;
@@ -214,117 +172,83 @@ header {
     transition: 0.3s;
 }
 
-
 .logout-btn i {
-
     margin-right: 8px;
-
 }
 
-
 .logout-btn:hover {
-
     background: #333;
     transform: translateY(-2px);
 }
 
 @media (max-width: 600px) {
-
-
     header {
-
-        height: 65px;
-        padding: 0 15px;
+        height: 60px;
+        padding: 0 12px; 
     }
-
 
     .logo {
-
-        width: 100px;
+        width: 105px;
     }
-
 
     .navlink {
-
-        gap: 18px;
+        gap: 14px;
     }
 
-
     .navlink span {
-
         display: none;
     }
 
-
     .navlink i {
-
         font-size: 18px;
     }
-
 
     .account {
-
-        margin: 30px auto;
-        padding: 0 15px;
+        width: 100%; /* Ensures it takes full available mobile width */
+        margin: 20px auto;
+        padding: 0 12px; /* Reduced side padding to give more breathing room */
     }
-
 
     .account > h1 {
-
-        font-size: 27px;
-        margin-bottom: 25px;
+        font-size: 24px;
+        margin-bottom: 20px;
     }
-
 
     .profile-card {
-
-        padding: 20px;
+        padding: 15px;
+        gap: 15px;
     }
-
 
     .profile-icon {
-
-        width: 55px;
-        height: 55px;
-        font-size: 22px;
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
     }
-
 
     .profile-info h2 {
-
-        font-size: 18px;
+        font-size: 17px;
     }
-
 
     .profile-info p {
-
-        font-size: 13px;
-    }
-
-
-    .account-card {
-
-        padding: 16px;
-    }
-
-
-    .account-card-icon {
-
-        width: 45px;
-        height: 45px;
-        font-size: 18px;
-    }
-
-
-    .account-card h3 {
-
-        font-size: 15px;
-    }
-
-
-    .account-card p {
-
         font-size: 12px;
     }
 
+    .account-card {
+        padding: 14px;
+        gap: 14px;
+    }
+
+    .account-card-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .account-card h3 {
+        font-size: 15px;
+    }
+
+    .account-card p {
+        font-size: 11px;
+    }
 }
