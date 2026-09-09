@@ -4,9 +4,7 @@
     box-sizing: border-box;
 }
 
-
 body {
-
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -14,8 +12,8 @@ body {
     background: #0b0f19;
     font-family: Arial, sans-serif;
     padding: 20px;
+    overflow-x: hidden;
 }
-
 
 .signup-container {
     width: 100%;
@@ -25,18 +23,15 @@ body {
 }
 
 .signup-box {
-
     width: 100%;
     max-width: 420px;
     background: #ffffff;
     padding: 40px 35px;
     border-radius: 15px;
-    box-shadow:
-        0 10px 40px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
 }
 
 .signup-icon {
-
     width: 65px;
     height: 65px;
     margin: 0 auto 20px;
@@ -50,65 +45,52 @@ body {
 }
 
 .signup-box h1 {
-
     text-align: center;
     font-size: 28px;
     margin-bottom: 8px;
 }
 
-
 .signup-box > p {
-
     text-align: center;
     color: #777;
     margin-bottom: 25px;
+    font-size: 14px;
 }
 
 .input-group {
-
     margin-bottom: 18px;
 }
 
-
 .input-group label {
-
     display: block;
     margin-bottom: 8px;
     font-size: 14px;
     font-weight: bold;
 }
 
-
 .input-group input {
-
     width: 100%;
     padding: 13px;
     border: 1px solid #ccc;
     border-radius: 8px;
     outline: none;
     font-size: 15px;
+    transition: border-color 0.2s;
 }
 
-
 .input-group input:focus {
-
     border-color: #111;
 }
 
 .password-box {
-
     position: relative;
 }
 
-
 .password-box input {
-
     padding-right: 45px;
 }
 
-
 .password-box button {
-
     position: absolute;
     right: 12px;
     top: 50%;
@@ -117,10 +99,11 @@ body {
     background: none;
     cursor: pointer;
     color: #666;
+    font-size: 15px;
+    padding: 4px;
 }
 
 #signup-error {
-
     display: none;
     color: #d00000;
     font-size: 14px;
@@ -129,7 +112,6 @@ body {
 }
 
 .signup-submit {
-
     width: 100%;
     padding: 14px;
     border: none;
@@ -142,43 +124,51 @@ body {
     transition: 0.3s;
 }
 
-
 .signup-submit:hover {
-
     background: #333;
     transform: translateY(-2px);
 }
 
 .login-text {
-
     margin-top: 25px;
     font-size: 14px;
+    text-align: center;
 }
 
-
 .login-text a {
-
     color: #111;
     font-weight: bold;
     text-decoration: none;
 }
 
-
 .login-text a:hover {
-
     text-decoration: underline;
 }
 
 @media (max-width: 500px) {
+    body {
+        padding: 15px 10px;
+        align-items: flex-start; /* Prevents vertical clipping on phone keyboards */
+    }
 
     .signup-box {
-
-        padding: 35px 20px;
+        padding: 30px 20px;
+        border-radius: 12px;
     }
 
     .signup-box h1 {
-
-        font-size: 25px;
+        font-size: 24px;
+        margin-bottom: 6px;
     }
 
+    .signup-box > p {
+        margin-bottom: 20px;
+    }
+
+    .signup-icon {
+        width: 55px;
+        height: 55px;
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
 }
