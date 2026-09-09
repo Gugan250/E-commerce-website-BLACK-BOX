@@ -4,11 +4,19 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     font-family: Arial, sans-serif;
     background: #f5f5f5;
     color: #111;
     overflow-x: hidden; 
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -19,6 +27,7 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 0 50px;
+    flex-shrink: 0;
 }
 
 .logo {
@@ -53,6 +62,7 @@ header {
 }
 
 .account {
+    flex: 1;
     width: 100%;
     max-width: 800px;
     margin: 50px auto;
@@ -204,9 +214,9 @@ header {
     }
 
     .account {
-        width: 100%; /* Ensures it takes full available mobile width */
+        width: 100%; 
         margin: 20px auto;
-        padding: 0 12px; /* Reduced side padding to give more breathing room */
+        padding: 0 12px; 
     }
 
     .account > h1 {
