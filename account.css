@@ -62,6 +62,7 @@ header {
 
 .navlink i {
     font-size: 17px;
+    flex-shrink: 0;
 }
 
 .account {
@@ -165,6 +166,7 @@ header {
     margin-left: auto;
     color: #777;
     transition: 0.3s;
+    flex-shrink: 0;
 }
 
 .account-card:hover .arrow {
