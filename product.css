@@ -490,13 +490,20 @@ header {
         font-size: 13px;
     }
 
+    /* STRICTLY FORCING 2 COLUMNS ON MOBILE */
     .product-grid {
-        grid-template-columns: repeat(2, 1fr);
+        display: grid;
+        grid-template-columns: repeat(2, 1fr) !important;
         gap: 10px;
     }
 
+    .product-card {
+        width: 100%;
+        max-width: 100%;
+    }
+
     .image-slider {
-        height: 160px;
+        height: 155px;
     }
 
     .product-info {
@@ -588,7 +595,7 @@ header {
 
 @media (max-width: 400px) {
     .image-slider {
-        height: 145px;
+        height: 135px;
     }
 
     .product-info {
