@@ -1,0 +1,4 @@
+user-agent: *
+Allow: /
+
+sitemap: https://gugan250.github.io/E-commerce-website-BLACK-BOX/sitemap.xml
