@@ -1,6 +1,4 @@
-const sliders = document.querySelectorAll(".image-slider");
-
-sliders.forEach((slider) => {
+document.querySelectorAll(".image-slider").forEach(slider => {
 
     const images = slider.querySelectorAll(".product-image");
     const prevBtn = slider.querySelector(".prev");
@@ -10,18 +8,17 @@ sliders.forEach((slider) => {
 
     function showImage(index) {
 
-        images.forEach((image) => {
+        images.forEach(image => {
             image.classList.remove("active");
         });
 
-        if (images[index]) {
-            images[index].classList.add("active");
-        }
+        images[index].classList.add("active");
     }
 
     if (nextBtn) {
+        nextBtn.addEventListener("click", function (e) {
 
-        nextBtn.addEventListener("click", () => {
+            e.stopPropagation();
 
             currentIndex++;
 
@@ -34,8 +31,9 @@ sliders.forEach((slider) => {
     }
 
     if (prevBtn) {
+        prevBtn.addEventListener("click", function (e) {
 
-        prevBtn.addEventListener("click", () => {
+            e.stopPropagation();
 
             currentIndex--;
 
@@ -49,401 +47,542 @@ sliders.forEach((slider) => {
 
 });
 
-let wishlist =
-    JSON.parse(localStorage.getItem("wishlist")) || [];
+let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
-const favoriteButtons =
-    document.querySelectorAll(".favorite-btn");
+function updateWishlistButtons() {
 
-favoriteButtons.forEach(function (button) {
+    document.querySelectorAll(".favorite-btn").forEach(button => {
 
-    const card =
-        button.closest(".product-card");
+        const card = button.closest(".product-card");
 
-    const icon =
-        button.querySelector("i");
+        if (!card) return;
 
-    const name =
-        card.querySelector("h3").textContent.trim();
+        const productName = card.dataset.name;
 
-
-    const alreadySaved =
-        wishlist.some(product => product.name === name);
-
-
-    if (alreadySaved) {
-
-        button.classList.add("active");
-
-        if (icon) {
-            icon.classList.remove("fa-regular");
-            icon.classList.add("fa-solid");
-        }
-    }
-
-
-    button.addEventListener("click", function () {
-
-        const description =
-            card.querySelector("p").textContent.trim();
-
-        const image =
-            card.querySelector(".product-image").src;
-
-        const price =
-            card.querySelector(".product-price")
-                .textContent
-                .replace("₹", "")
-                .replace(",", "")
-                .trim();
-
-
-        const existingProduct =
-            wishlist.find(
-                product => product.name === name
-            );
-
-
-        if (existingProduct) {
-
-            wishlist =
-                wishlist.filter(
-                    product => product.name !== name
-                );
-
-            button.classList.remove("active");
-
-            if (icon) {
-                icon.classList.remove("fa-solid");
-                icon.classList.add("fa-regular");
-            }
-
-        }
-
-        else {
-
-            wishlist.push({
-
-                name: name,
-
-                description: description,
-
-                image: image,
-
-                price: Number(price)
-
-            });
-
+        if (wishlist.includes(productName)) {
 
             button.classList.add("active");
 
-            if (icon) {
-                icon.classList.remove("fa-regular");
-                icon.classList.add("fa-solid");
-            }
+            button.innerHTML = "❤️";
+
+        } else {
+
+            button.classList.remove("active");
+
+            button.innerHTML = "♡";
+
         }
 
+    });
+
+}
+
+document.querySelectorAll(".favorite-btn").forEach(button => {
+
+    button.addEventListener("click", function (e) {
+
+        e.stopPropagation();
+
+        const card = this.closest(".product-card");
+
+        if (!card) return;
+
+        const productName = card.dataset.name;
+
+        if (wishlist.includes(productName)) {
+
+            wishlist = wishlist.filter(item => item !== productName);
+
+            this.classList.remove("active");
+
+            this.innerHTML = "♡";
+
+        } else {
+
+            wishlist.push(productName);
+
+            this.classList.add("active");
+
+            this.innerHTML = "❤️";
+
+        }
 
         localStorage.setItem(
             "wishlist",
             JSON.stringify(wishlist)
         );
 
-        console.log("Wishlist:", wishlist);
-
     });
 
 });
 
-let cart =
-    JSON.parse(localStorage.getItem("cart")) || [];
 
-const cartButtons =
-    document.querySelectorAll(".cart-btn");
+updateWishlistButtons();
 
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-function updateCartButton(button, added) {
+function updateCartCount() {
 
-    if (added) {
+    const cartCount = document.getElementById("cart-count");
 
-        button.innerHTML =
-            '<i class="fa-solid fa-cart-shopping"></i> Go to Cart';
+    if (!cartCount) return;
 
-        button.classList.add("go-to-cart");
-
-    }
-
-    else {
-
-        button.innerHTML =
-            '<i class="fa-solid fa-cart-shopping"></i> Add to Cart';
-
-        button.classList.remove("go-to-cart");
-
-    }
+    cartCount.textContent = cart.length;
 
 }
 
-
-cartButtons.forEach(function (button) {
-
-    const card =
-        button.closest(".product-card");
-
-    if (!card) {
-        return;
-    }
+function getProductData(card) {
 
     const name =
-        card.querySelector("h3").textContent.trim();
+        card.querySelector("h3")?.textContent.trim() || "";
 
+    const description =
+        card.querySelector("p")?.textContent.trim() || "";
 
-    const alreadyInCart =
-        cart.some(
-            product => product.name === name
-        );
+    const priceElement =
+        card.querySelector(".price");
 
+    let price = 0;
 
-    if (alreadyInCart) {
+    if (priceElement) {
 
-        updateCartButton(button, true);
+        price =
+            parseInt(
+                priceElement.textContent
+                    .replace(/[₹,]/g, "")
+            ) || 0;
 
     }
 
-    button.addEventListener("click", function () {
+    const image =
+        card.querySelector(".product-image.active") ||
+        card.querySelector(".product-image");
+
+    const imageSrc =
+        image ? image.src : "";
+
+    return {
+        name,
+        description,
+        price,
+        image: imageSrc
+    };
+
+}
+
+function updateCartButtons() {
+
+    document.querySelectorAll(".add-cart-btn").forEach(button => {
+
+        const card = button.closest(".product-card");
+
+        if (!card) return;
+
+        const productName =
+            card.querySelector("h3")?.textContent.trim();
 
         const existingProduct =
-            cart.find(
-                product => product.name === name
-            );
+            cart.find(item => item.name === productName);
+
+        if (existingProduct) {
+
+            button.textContent = "Go to Cart";
+
+            button.classList.add("go-to-cart");
+
+        } else {
+
+            button.textContent = "Add to Cart";
+
+            button.classList.remove("go-to-cart");
+
+        }
+
+    });
+
+}
+
+document.querySelectorAll(".add-cart-btn").forEach(button => {
+
+    button.addEventListener("click", function (e) {
+
+        e.stopPropagation();
+
+        const card =
+            this.closest(".product-card");
+
+        if (!card) return;
+
+        const product =
+            getProductData(card);
+
+        const existingProduct =
+            cart.find(item => item.name === product.name);
 
         if (existingProduct) {
 
             window.location.href = "cart.html";
 
             return;
+
         }
-
-        const description =
-            card.querySelector("p").textContent.trim();
-
-        const image =
-            card.querySelector(".product-image").src;
-
-        const price =
-            card.querySelector(".product-price")
-                .textContent
-                .replace("₹", "")
-                .replace(",", "")
-                .trim();
-
-        cart.push({
-
-            name: name,
-
-            description: description,
-
-            image: image,
-
-            price: Number(price),
-
-            quantity: 1
-
-        });
+        
+        cart.push(product);
 
         localStorage.setItem(
             "cart",
             JSON.stringify(cart)
         );
 
-        updateCartButton(button, true);
+        this.textContent = "Go to Cart";
+
+        this.classList.add("go-to-cart");
 
 
-        console.log("Cart:", cart);
+        updateCartCount();
 
     });
 
 });
 
-const imageModal =
+
+updateCartCount();
+
+updateCartButtons();
+
+const modal =
     document.getElementById("imageModal");
 
 const modalImage =
     document.getElementById("modalImage");
 
-const modalClose =
-    document.getElementById("modalClose");
+const closeModal =
+    document.querySelector(".close-modal");
 
-const modalPrev =
-    document.getElementById("modalPrev");
+document.querySelectorAll(".product-image").forEach(image => {
 
-const modalNext =
-    document.getElementById("modalNext");
+    image.addEventListener("click", function () {
 
-const modalContainer =
-    document.getElementById("modalImageContainer");
+        if (!modal || !modalImage) return;
 
+        modal.style.display = "flex";
 
-let modalImages = [];
+        modalImage.src = this.src;
 
-let modalIndex = 0;
-
-document.querySelectorAll(".image-slider").forEach((slider) => {
-
-    const images =
-        slider.querySelectorAll(".product-image");
-
-
-    images.forEach((image, index) => {
-
-        image.addEventListener("click", function (event) {
-
-            if (
-                event.target.closest(".prev") ||
-                event.target.closest(".next")
-            ) {
-                return;
-            }
-
-
-            modalImages =
-                Array.from(images)
-                    .map(img => img.src);
-
-
-            const activeImage =
-                slider.querySelector(
-                    ".product-image.active"
-                );
-
-
-            modalIndex =
-                Array.from(images)
-                    .indexOf(activeImage);
-
-
-            if (modalIndex < 0) {
-
-                modalIndex = index;
-
-            }
-
-
-            openImageViewer();
-
-        });
+        modalImage.style.transform =
+            "scale(1)";
 
     });
 
 });
 
-function openImageViewer() {
+if (closeModal) {
 
-    if (!imageModal || !modalImage) {
-        return;
-    }
+    closeModal.addEventListener("click", function () {
 
-    modalImage.src =
-        modalImages[modalIndex];
+        modal.style.display = "none";
 
-    imageModal.classList.add("active");
-
-    document.body.style.overflow =
-        "hidden";
-
-    resetZoom();
+    });
 
 }
 
-function closeImageViewer() {
+if (modal) {
 
-    if (!imageModal) {
-        return;
-    }
+    modal.addEventListener("click", function (e) {
 
-    imageModal.classList.remove("active");
+        if (e.target === modal) {
 
-    document.body.style.overflow =
-        "";
+            modal.style.display = "none";
 
-    resetZoom();
+        }
+
+    });
 
 }
 
+let zoomLevel = 1;
 
-if (modalClose) {
+if (modalImage) {
 
-    modalClose.addEventListener(
-        "click",
-        closeImageViewer
+    modalImage.addEventListener("wheel", function (e) {
+
+        e.preventDefault();
+
+        if (e.deltaY < 0) {
+
+            zoomLevel += 0.1;
+
+        } else {
+
+            zoomLevel -= 0.1;
+
+        }
+
+        if (zoomLevel < 1) {
+
+            zoomLevel = 1;
+
+        }
+
+        if (zoomLevel > 3) {
+
+            zoomLevel = 3;
+
+        }
+
+        this.style.transform =
+            `scale(${zoomLevel})`;
+
+    });
+
+}
+
+document.querySelectorAll(".product-image").forEach(image => {
+
+    image.addEventListener("click", function () {
+
+        zoomLevel = 1;
+
+    });
+
+});
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const suggestionsBox =
+    document.getElementById("suggestions");
+
+const searchBtn =
+    document.getElementById("searchBtn");
+
+const productCards =
+    document.querySelectorAll(".product-card");
+
+function getSearchData(card) {
+
+    const productName =
+        card.querySelector("h3")?.textContent
+            .toLowerCase()
+            .trim() || "";
+
+    const description =
+        card.querySelector("p")?.textContent
+            .toLowerCase()
+            .trim() || "";
+
+    const dataName =
+        card.dataset.name
+            ?.toLowerCase()
+            .trim() || "";
+
+    return {
+        productName,
+        description,
+        dataName,
+        searchData:
+            `${productName} ${description} ${dataName}`
+                .toLowerCase()
+    };
+
+}
+
+function searchProducts() {
+
+    if (!searchInput) return;
+
+    const searchText =
+        searchInput.value
+            .toLowerCase()
+            .trim();
+
+    if (suggestionsBox) {
+
+        suggestionsBox.innerHTML = "";
+
+    }
+
+    if (searchText === "") {
+
+        productCards.forEach(card => {
+
+            card.style.display = "";
+
+        });
+
+        return;
+
+    }
+
+
+    let foundProducts = [];
+
+
+    productCards.forEach(card => {
+
+        const data =
+            getSearchData(card);
+
+        if (data.searchData.includes(searchText)) {
+
+            card.style.display = "";
+
+            foundProducts.push({
+                card,
+                data
+            });
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+    if (
+        suggestionsBox &&
+        foundProducts.length > 0
+    ) {
+
+        foundProducts.forEach(item => {
+
+            const suggestion =
+                document.createElement("div");
+
+            suggestion.classList.add(
+                "suggestion-item"
+            );
+
+
+            suggestion.innerHTML = `
+                <span class="suggestion-icon">🔍</span>
+
+                <div class="suggestion-content">
+
+                    <strong>
+                        ${item.data.productName}
+                    </strong>
+
+                    <small>
+                        ${item.data.description}
+                    </small>
+
+                </div>
+            `;
+
+            suggestion.addEventListener(
+                "click",
+                function () {
+
+                    searchInput.value =
+                        item.data.productName;
+
+
+                    suggestionsBox.innerHTML = "";
+
+                    item.card.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                    item.card.classList.add(
+                        "search-highlight"
+                    );
+
+
+                    setTimeout(() => {
+
+                        item.card.classList.remove(
+                            "search-highlight"
+                        );
+
+                    }, 1500);
+
+                }
+            );
+
+
+            suggestionsBox.appendChild(
+                suggestion
+            );
+
+        });
+
+    }
+
+}
+
+if (searchInput) {
+
+    searchInput.addEventListener(
+        "input",
+        searchProducts
     );
 
 }
 
-if (modalNext) {
+if (searchBtn) {
 
-    modalNext.addEventListener(
+    searchBtn.addEventListener(
         "click",
         function () {
 
-            modalIndex++;
+            searchProducts();
 
-            if (
-                modalIndex >= modalImages.length
-            ) {
+            if (!searchInput) return;
 
-                modalIndex = 0;
+            const firstVisible =
+                [...productCards].find(card => {
+
+                    return card.style.display !== "none";
+
+                });
+
+
+            if (firstVisible) {
+
+                firstVisible.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
 
             }
-
-
-            modalImage.src =
-                modalImages[modalIndex];
-
-            resetZoom();
 
         }
     );
 
 }
 
-if (modalPrev) {
+if (searchInput) {
 
-    modalPrev.addEventListener(
-        "click",
-        function () {
+    searchInput.addEventListener(
+        "keydown",
+        function (e) {
 
-            modalIndex--;
+            if (e.key === "Enter") {
 
-            if (modalIndex < 0) {
+                e.preventDefault();
 
-                modalIndex =
-                    modalImages.length - 1;
-
-            }
+                searchProducts();
 
 
-            modalImage.src =
-                modalImages[modalIndex];
+                const firstVisible =
+                    [...productCards].find(card => {
 
-            resetZoom();
+                        return card.style.display !== "none";
 
-        }
-    );
+                    });
 
-}
 
-if (imageModal) {
+                if (firstVisible) {
 
-    imageModal.addEventListener(
-        "click",
-        function (event) {
+                    firstVisible.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
 
-            if (
-                event.target === imageModal
-            ) {
-
-                closeImageViewer();
+                }
 
             }
 
@@ -453,208 +592,40 @@ if (imageModal) {
 }
 
 document.addEventListener(
-    "keydown",
-    function (event) {
+    "click",
+    function (e) {
 
         if (
-            !imageModal ||
-            !imageModal.classList.contains("active")
-        ) {
-            return;
-        }
-
-        if (event.key === "Escape") {
-
-            closeImageViewer();
-
-        }
-
-
-        if (
-            event.key === "ArrowRight" &&
-            modalNext
+            suggestionsBox &&
+            searchInput &&
+            !searchInput.contains(e.target) &&
+            !suggestionsBox.contains(e.target)
         ) {
 
-            modalNext.click();
-
-        }
-
-
-        if (
-            event.key === "ArrowLeft" &&
-            modalPrev
-        ) {
-
-            modalPrev.click();
+            suggestionsBox.innerHTML = "";
 
         }
 
     }
 );
 
-if (modalContainer) {
+const highlightStyle =
+    document.createElement("style");
 
-    modalContainer.addEventListener(
-        "mousemove",
-        function (event) {
+highlightStyle.textContent = `
 
-            if (window.innerWidth <= 600) {
-                return;
-            }
-
-
-            const rect =
-                modalContainer.getBoundingClientRect();
-
-
-            const x =
-                ((event.clientX - rect.left) /
-                    rect.width) * 100;
-
-
-            const y =
-                ((event.clientY - rect.top) /
-                    rect.height) * 100;
-
-
-            modalImage.style.transformOrigin =
-                `${x}% ${y}%`;
-
-
-            modalImage.style.transform =
-                "scale(2.2)";
-
-
-            modalContainer.classList.add(
-                "zooming"
-            );
-
-        }
-    );
-
-
-    modalContainer.addEventListener(
-        "mouseleave",
-        function () {
-
-            resetZoom();
-
-        }
-    );
-
-}
-
-function resetZoom() {
-
-    if (!modalImage) {
-        return;
+    .search-highlight {
+        outline: 3px solid #2874f0;
+        transform: translateY(-5px);
+        transition: 0.3s ease;
     }
 
-    modalImage.style.transform =
-        "scale(1)";
+`;
 
-    modalImage.style.transformOrigin =
-        "center center";
+document.head.appendChild(highlightStyle);
 
+updateCartCount();
 
-    if (modalContainer) {
+updateCartButtons();
 
-        modalContainer.classList.remove(
-            "zooming"
-        );
-
-    }
-
-}
-
-const searchInput = document.getElementById("searchInput");
-const suggestionsBox = document.getElementById("suggestions");
-const productCards = document.querySelectorAll(".product-card");
-
-if (searchInput && suggestionsBox) {
-
-    searchInput.addEventListener("input", function () {
-
-        const searchText = searchInput.value
-            .toLowerCase()
-            .trim();
-
-        suggestionsBox.innerHTML = "";
-
-        if (searchText === "") {
-
-            suggestionsBox.style.display = "none";
-
-            productCards.forEach(card => {
-                card.style.display = "";
-            });
-
-            return;
-        }
-
-        let found = false;
-
-        productCards.forEach(card => {
-
-            const productName = card.dataset.name.toLowerCase();
-
-            if (productName.includes(searchText)) {
-
-                // Show matching product
-                card.style.display = "";
-                found = true;
-
-                // Create suggestion
-                const suggestion = document.createElement("div");
-
-                suggestion.className = "suggestion-item";
-
-                suggestion.innerHTML = `
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>${card.dataset.name}</span>
-                `;
-
-                suggestion.addEventListener("click", function () {
-
-                    searchInput.value = card.dataset.name;
-
-                    suggestionsBox.style.display = "none";
-
-                    card.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center"
-                    });
-
-                    card.classList.add("search-highlight");
-
-                    setTimeout(() => {
-                        card.classList.remove("search-highlight");
-                    }, 1000);
-
-                });
-
-                suggestionsBox.appendChild(suggestion);
-
-            } else {
-
-                card.style.display = "none";
-            }
-        });
-
-        if (found) {
-            suggestionsBox.style.display = "block";
-        } else {
-            suggestionsBox.style.display = "none";
-        }
-
-    });
-
-    document.addEventListener("click", function (event) {
-
-        if (!event.target.closest(".search-container")) {
-            suggestionsBox.style.display = "none";
-        }
-
-    });
-
-}
+updateWishlistButtons();
