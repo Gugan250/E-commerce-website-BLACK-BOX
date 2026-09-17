@@ -566,3 +566,95 @@ function resetZoom() {
     }
 
 }
+
+const searchInput = document.getElementById("searchInput");
+const suggestionsBox = document.getElementById("suggestions");
+const productCards = document.querySelectorAll(".product-card");
+
+if (searchInput && suggestionsBox) {
+
+    searchInput.addEventListener("input", function () {
+
+        const searchText = searchInput.value
+            .toLowerCase()
+            .trim();
+
+        suggestionsBox.innerHTML = "";
+
+        if (searchText === "") {
+
+            suggestionsBox.style.display = "none";
+
+            productCards.forEach(card => {
+                card.style.display = "";
+            });
+
+            return;
+        }
+
+        let found = false;
+
+        productCards.forEach(card => {
+
+            const productName = card.dataset.name.toLowerCase();
+
+            if (productName.includes(searchText)) {
+
+                // Show matching product
+                card.style.display = "";
+                found = true;
+
+                // Create suggestion
+                const suggestion = document.createElement("div");
+
+                suggestion.className = "suggestion-item";
+
+                suggestion.innerHTML = `
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>${card.dataset.name}</span>
+                `;
+
+                suggestion.addEventListener("click", function () {
+
+                    searchInput.value = card.dataset.name;
+
+                    suggestionsBox.style.display = "none";
+
+                    card.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                    card.classList.add("search-highlight");
+
+                    setTimeout(() => {
+                        card.classList.remove("search-highlight");
+                    }, 1000);
+
+                });
+
+                suggestionsBox.appendChild(suggestion);
+
+            } else {
+
+                card.style.display = "none";
+            }
+        });
+
+        if (found) {
+            suggestionsBox.style.display = "block";
+        } else {
+            suggestionsBox.style.display = "none";
+        }
+
+    });
+
+    document.addEventListener("click", function (event) {
+
+        if (!event.target.closest(".search-container")) {
+            suggestionsBox.style.display = "none";
+        }
+
+    });
+
+}
