@@ -211,7 +211,7 @@ if (checkoutBtn) {
             }
 
             window.location.href =
-                "checkout.html";
+                "Checkout.html";
 
         }
     );
