@@ -91,6 +91,6 @@ checkoutForm.addEventListener("submit", function(event) {
 
 
     window.location.href =
-        "orderSuccess.html";
+        "OrderSuccess.html";
 
 });
