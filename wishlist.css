@@ -231,6 +231,32 @@ header {
 .empty-wishlist a:hover {
     background-color: #2563eb;
 }
+.nav-link {
+  position: relative;
+  color: #b8b8be;
+}
+
+.nav-link.active {
+  color: #f1f1f3;       /* brighter gray */
+  font-weight: 800;
+}
+
+.nav-link.active i {
+  color: #f1f1f3;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.25));
+}
+
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 70%;
+  height: 3px;
+  border-radius: 20px;
+  background: #d7d7dc;  /* gray underline */
+  transform: translateX(-50%);
+}
 
 /* ============================= */
 /* RESPONSIVE BREAKPOINTS */
@@ -360,4 +386,11 @@ header {
     .wishlist-cart {
         font-size: 9px;
     }
+}
+
+@media (max-width: 700px) {
+  .nav-link.active::after {
+    width: 26px;
+    bottom: -5px;
+  }
 }
